@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class MovieScreening {
     private LocalDateTime dateAndTime;
-    private Double pricePerSeat;
+    private double pricePerSeat;
     public Movie movie;
     public ArrayList<MovieTicket> tickets;
 
@@ -15,7 +15,8 @@ public class MovieScreening {
     }
 
     public Double getPricePerSeat() {
-        return pricePerSeat;
+        boolean isWeekday = this.dateAndTime.getDayOfWeek().getValue() < 5;
+        return isWeekday ? this.pricePerSeat : 0;
     }
 
     @Override
