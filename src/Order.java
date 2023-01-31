@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
+
 
 public class Order {
     private int orderNr;
@@ -15,22 +18,96 @@ public class Order {
         return orderNr;
     }
 
-    public void addSeatReservation(MovieTicket ticket){
+    public void addSeatReservation(MovieTicket ticket) {
         this.tickets.add(ticket);
     }
 
-    public double calculatePrice(){
+    public double calculatePrice() {
+
+        boolean isSecondTicketFree = false;
+        boolean tenPercentDisc = false;
+
+        // Check if 2e ticket is free & ten percent discount is valid
+        switch(tickets.get(tickets.size()).movieScreening.getLocalDateTime().getDayOfWeek().toString().toLowerCase()) {
+            case "monday":
+            case "tuesday":
+            case "wednesday":
+            case "thursday":
+                isSecondTicketFree = true;
+                break;
+            case "friday":
+            case "saturday":
+            case "sunday":
+                if (isStudentOrder) {
+                    isSecondTicketFree = true;
+                }
+
+                if (tickets.size() >= 6) {
+                    tenPercentDisc = true;
+                }
+
+                break;
+        }
+
+
         double price = 0;
-        for (MovieTicket movieTicket : tickets) {
-            price += movieTicket.getPrice();
+        boolean secondSwitcher = false;
+        for (MovieTicket ticket: tickets) {
+
+            if (isSecondTicketFree) {
+
+                if (secondSwitcher) {
+
+                    if (isStudentOrder) {
+    
+                        price += ticket.getPrice();
+    
+                        if (ticket.isPremiumTicket()) 
+                            price += ticket.getPrice() + 2;                                        
+                    
+                
+                    } else if (!isStudentOrder) {
+                        price += ticket.getPrice();
+    
+                        if (ticket.isPremiumTicket()) 
+                            price += ticket.getPrice() + 3;   
+                    }
+    
+                    if (ticket.isPremiumTicket() & isStudentOrder) {
+                        price += ticket.getPrice() + 2;
+                    
+                    } else if (!ticket.isPremiumTicket()) {
+                        price += ticket.getPrice() + 0;
+                        
+                    }
+                }                
+                
+                secondSwitcher = !secondSwitcher;
+            }              
+        
+        }
+
+        if (tenPercentDisc) {
+            price = price * 0.90;
         }
 
         return price;
     }
 
-    public void export(TicketExportFormat format){
-
-    } 
+    // public void export(TicketExportFormat exportFormat, Object object, String fileName) throws IOException {    
+        // switch (exportFormat) {        
+        //     case JSON:            
+        //     ObjectMapper objectMapper = new ObjectMapper();            
+        //     objectMapper.writeValue(new File(fileName + ".json"), object);            
+        //     break;       
+        //     case PLAINTEXT:            
+        //     FileWriter fileWriter = new FileWriter(fileName + ".txt");            
+        //     fileWriter.write(object.toString());            
+        //     fileWriter.close();            
+        //     break;        
+        //     default:            
+        //     throw new IllegalArgumentException("Invalid format: " + exportFormat);    
+        // }}
 }
 
 enum TicketExportFormat{

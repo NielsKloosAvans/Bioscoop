@@ -18,6 +18,10 @@ public class MovieScreening {
         return pricePerSeat;
     }
 
+    public LocalDateTime getLocalDateTime() {
+        return this.dateAndTime;
+    }
+
     @Override
     public String toString() {
         return "MovieScreening [dateAndTime=" + dateAndTime + ", pricePerSeat=" + pricePerSeat + "]";
