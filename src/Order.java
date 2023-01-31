@@ -40,9 +40,8 @@ public class Order {
             case "sunday":
                 if (isStudentOrder) {
                     isSecondTicketFree = true;
-                }
-
-                if (tickets.size() >= 6) {
+                
+                } else if (tickets.size() >= 6) {
                     tenPercentDisc = true;
                 }
 
@@ -54,38 +53,28 @@ public class Order {
         boolean secondSwitcher = false;
         for (MovieTicket ticket: tickets) {
 
-            if (isSecondTicketFree) {
+          
+            if (secondSwitcher) {
 
-                if (secondSwitcher) {
+                if (isStudentOrder) {
 
-                    if (isStudentOrder) {
-    
-                        price += ticket.getPrice();
-    
-                        if (ticket.isPremiumTicket()) 
-                            price += ticket.getPrice() + 2;                                        
-                    
+                    price += ticket.getPrice();
+
+                    if (ticket.isPremiumTicket()) 
+                        price += ticket.getPrice() + 2;                                        
                 
-                    } else if (!isStudentOrder) {
-                        price += ticket.getPrice();
-    
-                        if (ticket.isPremiumTicket()) 
-                            price += ticket.getPrice() + 3;   
-                    }
-    
-                    if (ticket.isPremiumTicket() & isStudentOrder) {
-                        price += ticket.getPrice() + 2;
-                    
-                    } else if (!ticket.isPremiumTicket()) {
-                        price += ticket.getPrice() + 0;
-                        
-                    }
-                }                
-                
+            
+                } else if (!isStudentOrder) {
+                    price += ticket.getPrice();
+
+                    if (ticket.isPremiumTicket()) 
+                        price += ticket.getPrice() + 3;   
+                }
+            }                
+            
+            if (isSecondTicketFree)
                 secondSwitcher = !secondSwitcher;
-            }              
-        
-        }
+        }         
 
         if (tenPercentDisc) {
             price = price * 0.90;
