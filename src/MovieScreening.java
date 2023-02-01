@@ -15,7 +15,8 @@ public class MovieScreening {
     }
 
     public double getPricePerSeat() {
-        return pricePerSeat;
+        boolean isWeekday = this.dateAndTime.getDayOfWeek().getValue() < 5;
+        return isWeekday ? this.pricePerSeat : 0;
     }
 
     @Override

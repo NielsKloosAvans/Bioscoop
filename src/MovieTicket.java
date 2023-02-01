@@ -16,13 +16,7 @@ public class MovieTicket {
         return isPremium;
     }
     public double getPrice(){
-        double price;
-        if (isPremium = false){
-            price = movieScreening.pricePerSeat;
-        } else {
-            price = movieScreening.pricePerSeat + 2;
-        }
-        return price;
+        return isPremium ? movieScreening.getPricePerSeat() + 2 : movieScreening.getPricePerSeat();
     }
 
     @Override
